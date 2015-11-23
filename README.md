@@ -41,3 +41,5 @@ The latest symfony standard edition is installed too!
  
 ## 3) Sets everything up:
 vagrant up
+cd /THE_FOLDER_TO_SYNC
+composer install
