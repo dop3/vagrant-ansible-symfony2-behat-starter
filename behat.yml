@@ -1,0 +1,14 @@
+default:
+  suites:
+    default:
+      contexts:
+        - FeatureContext
+        - behatch:json
+        - behatch:rest
+  extensions:
+    Behat\Symfony2Extension: ~
+    Behat\MinkExtension:
+      sessions:
+        default:
+          symfony2: ~
+    Sanpi\Behatch\Extension: ~

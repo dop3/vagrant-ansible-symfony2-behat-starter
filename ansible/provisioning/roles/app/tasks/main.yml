@@ -1,0 +1,3 @@
+# application tasks to be customized and to run after the main provision
+- name: Install Symfony Installer
+  shell: curl -LsS http://symfony.com/installer > symfony.phar && sudo mv symfony.phar /usr/local/bin/symfony && chmod a+x /usr/local/bin/symfony creates=/usr/local/bin/symfony

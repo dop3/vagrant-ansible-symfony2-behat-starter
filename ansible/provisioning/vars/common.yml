@@ -1,0 +1,7 @@
+---
+    php_ppa: php5
+    doc_root: /var/s2start
+    sys_packages: ["git", "yui-compressor"]
+    dist: precise
+    php_packages: ["php-pear","php5-common","php5-curl","php5-gd","php5-intl","php5-mcrypt","php5-mysql","php5-xdebug"]
+    pecl_packages: []

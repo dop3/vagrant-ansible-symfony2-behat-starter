@@ -1,0 +1,6 @@
+mysql:
+    root_password: 
+    user: s2start
+    password: s2start
+    database: s2start
+    database_test: s2start_test

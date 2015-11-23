@@ -1,0 +1,11 @@
+[dev-server]
+192.168.33.99
+
+[production-www1]
+none
+
+[staging-www1]
+none
+
+[web-servers:children]
+production-www1

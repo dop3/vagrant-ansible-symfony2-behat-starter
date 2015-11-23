@@ -1,0 +1,22 @@
+---
+- hosts: all
+  sudo: true
+  vars:
+    app_name: s2start
+    entry_point: app_dev.php
+    web_server: nginxphp
+    servername: s2start.dev 192.168.33.99
+    timezone: Europe/Rome
+  vars_files:
+    - vars/mysql.yml
+    - vars/common.yml
+    - [ "vars/nginxphp.yml", "vars/ws_defaults.yml" ]
+  roles:
+    - init
+    - php5-cli
+    - nginx
+    - php5-fpm
+    - mysql
+    - composer
+    - phpcommon
+    - app
