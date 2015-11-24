@@ -47,6 +47,7 @@ Then we install the latest symfony standard edition!
 ### 2.3) ./ansible/provisioning/vars/common.yml
  * doc_root: THE_FOLDER_TO_SYNC
  * app_folder: THE_WEB_APP_FOLDER_NAME
+ * github_token: YOUR_GITHUB_TOKEN (to avoit rate limit errors)
  
 ### 2.4) ./ansible/provisioning/vars/mysql.yml
  * user: THE_DB_USER

@@ -2,23 +2,26 @@
 - name: Install Symfony Installer
   shell: sudo curl -LsS http://symfony.com/installer -o /usr/local/bin/symfony && sudo chmod a+x /usr/local/bin/symfony creates=/usr/local/bin/symfony
 
-- name: Create wepapp directory
-  file: path={{ doc_root }}/{{ app_folder }} state=directory mode=0755
+#- name: Create wepapp directory
+#  file: path={{ doc_root }}/{{ app_folder }} state=directory mode=0755
 
 - name: Install Symfony Standard Edition
  # command: composer create-project symfony/framework-standard-edition temp chdir={{doc_root}}
-  command: symfony new temp creates={{ doc_root }}/{{ app_folder }}
+  command: symfony new s2_temp creates=s2_temp
 
 - name: Copy everything to the webapp folder
-  shell: sudo cp -R temp/* {{doc_root}}/{{app_folder}} creates={{ doc_root }}/{{ app_folder }}
+  shell: mkdir {{doc_root}}/{{app_folder}} && sudo cp -R s2_temp/* {{doc_root}}/{{app_folder}} creates={{ doc_root }}/{{ app_folder }}
 
 - name: Delete temp folder
-  command: sudo rm -R temp removes=temp
+  command: sudo rm -R s2_temp removes=s2_temp
 
 - name: disable xdebug
   command: sudo php5dismod xdebug
   notify: restart nginx
   notify: restart php5-fpm
+
+- name: add github token to prevent github rate limit error
+  shell: composer config github-oauth.github.com {{ github_token }} chdir={{doc_root}}/{{ app_folder }}
 
 - name: require dependencies
   command: composer require {{ item }} chdir={{ doc_root }}/{{ app_folder }}
