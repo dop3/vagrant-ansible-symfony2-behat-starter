@@ -2,17 +2,17 @@
 - name: Install Symfony Installer
   shell: sudo curl -LsS http://symfony.com/installer -o /usr/local/bin/symfony && sudo chmod a+x /usr/local/bin/symfony creates=/usr/local/bin/symfony
 
-- name: Install Symfony Standard Edition
- # command: composer create-project symfony/framework-standard-edition temp chdir={{doc_root}}
-  command: symfony new temp creates=temp
-
 - name: Create wepapp directory
   file: path={{ doc_root }}/{{ app_folder }} state=directory mode=0755
 
-- name: Copy everything to the webapp folder
-  shell: sudo cp -R temp/* {{doc_root}}/{{app_folder}}
+- name: Install Symfony Standard Edition
+ # command: composer create-project symfony/framework-standard-edition temp chdir={{doc_root}}
+  command: symfony new temp creates={{ doc_root }}/{{ app_folder }}
 
-- name: Move everything to the project root folder
+- name: Copy everything to the webapp folder
+  shell: sudo cp -R temp/* {{doc_root}}/{{app_folder}} creates={{ doc_root }}/{{ app_folder }}
+
+- name: Delete temp folder
   command: sudo rm -R temp removes=temp
 
 - name: disable xdebug
@@ -61,3 +61,6 @@
   command: sudo php5enmod xdebug
   notify: restart nginx
   notify: restart php5-fpm
+
+- name: update .gitignore
+  template: src=tpl.gitignore dest={{ doc_root }}/.gitignore

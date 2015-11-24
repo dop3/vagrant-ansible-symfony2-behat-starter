@@ -1,0 +1,16 @@
+/{{ app_folder }}/app/bootstrap.php.cache
+/{{ app_folder }}/app/cache/*
+/{{ app_folder }}/!app/cache/.gitkeep
+/{{ app_folder }}/app/config/parameters.yml
+/{{ app_folder }}/app/logs/*
+/{{ app_folder }}/!app/logs/.gitkeep
+/{{ app_folder }}/app/phpunit.xml
+/{{ app_folder }}/bin/*
+/{{ app_folder }}/!bin/behat-test
+/{{ app_folder }}/composer.phar
+/{{ app_folder }}/vendor/
+/{{ app_folder }}/web/bundles/
+
+.idea
+.vagrant
+.DS_Store
