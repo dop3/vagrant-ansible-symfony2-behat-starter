@@ -1,3 +1,63 @@
 # application tasks to be customized and to run after the main provision
 - name: Install Symfony Installer
-  shell: curl -LsS http://symfony.com/installer > symfony.phar && sudo mv symfony.phar /usr/local/bin/symfony && chmod a+x /usr/local/bin/symfony creates=/usr/local/bin/symfony
+  shell: sudo curl -LsS http://symfony.com/installer -o /usr/local/bin/symfony && sudo chmod a+x /usr/local/bin/symfony creates=/usr/local/bin/symfony
+
+- name: Install Symfony Standard Edition
+ # command: composer create-project symfony/framework-standard-edition temp chdir={{doc_root}}
+  command: symfony new temp creates=temp
+
+- name: Create wepapp directory
+  file: path={{ doc_root }}/{{ app_folder }} state=directory mode=0755
+
+- name: Copy everything to the webapp folder
+  shell: sudo cp -R temp/* {{doc_root}}/{{app_folder}}
+
+- name: Move everything to the project root folder
+  command: sudo rm -R temp removes=temp
+
+- name: disable xdebug
+  command: sudo php5dismod xdebug
+  notify: restart nginx
+  notify: restart php5-fpm
+
+- name: require dependencies
+  command: composer require {{ item }} chdir={{ doc_root }}/{{ app_folder }}
+  with_items:
+    - doctrine/doctrine-migrations-bundle
+    - stof/doctrine-extensions-bundle
+
+- name: require dev dependencies
+  command: composer require --dev {{ item }} chdir={{ doc_root }}/{{ app_folder }}
+  with_items:
+    - behat/behat
+    - behat/symfony2-extension
+    - behat/mink
+    - behat/mink-extension
+    - behat/mink-browserkit-driver
+    - behatch/contexts
+
+- name: Change default symfony paramters
+  template: src=parameters.yml dest={{ doc_root }}/{{ app_folder }}/app/config/parameters.yml
+
+- name: Update config.test
+  template: src=config_test.yml dest={{ doc_root }}/{{ app_folder }}/app/config/config_test.yml
+
+- name: Comment dev lines in app_dev.php
+  template: src=app_dev.php dest={{ doc_root }}/{{ app_folder }}/web/app_dev.php
+
+- name: copy behat config file
+  template: src=behat.yml dest={{ doc_root }}/{{ app_folder }}/behat.yml
+
+- name: create behat folders structure
+  file: path={{ doc_root }}/{{ app_folder }}/features/bootstrap state=directory mode=0755
+
+- name: copy FeatureContext class
+  template: src=FeatureContext.php dest={{ doc_root }}/{{ app_folder }}/features/bootstrap/FeatureContext.php
+
+- name: copy smoke test feature
+  template: src=00.smoke-test.feature dest={{ doc_root }}/{{ app_folder }}/features/00.smoke-test.feature
+
+- name: enable xdebug
+  command: sudo php5enmod xdebug
+  notify: restart nginx
+  notify: restart php5-fpm

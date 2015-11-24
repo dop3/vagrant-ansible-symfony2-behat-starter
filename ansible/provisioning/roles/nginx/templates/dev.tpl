@@ -1,7 +1,7 @@
 server {
     listen  80;
 
-    root {{ doc_root }}/web;
+    root {{ doc_root }}/{{ app_folder }}/web;
 
     server_name {{ servername }};
 
